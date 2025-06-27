@@ -4,17 +4,15 @@ plugins {
 }
 
 group = "kioskware.xserializer"
-version = "1.0-SNAPSHOT"
+version = "1.8.0"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
-    // Enable kotlin reflection
-    implementation("org.jetbrains.kotlin:kotlin-reflect:2.1.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$version")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$version")
     testImplementation(kotlin("test"))
 }
 

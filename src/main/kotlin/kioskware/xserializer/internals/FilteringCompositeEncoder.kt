@@ -30,8 +30,8 @@ internal class FilteringCompositeEncoder(
             classAnnotations = descriptor.annotations
         )
         return filter(info).also {
-            if (!it && !info.isNullable) {
-                throw SerializationException("Property '${info.serialName}' is not nullable and cannot be filtered out.")
+            if (!it && (!info.isNullable || !info.isOptional)) {
+                throw SerializationException("Filtered out property '${info.serialName}' must be nullable and optional.")
             }
         }
     }
@@ -97,9 +97,6 @@ internal class FilteringCompositeEncoder(
         value: T
     ) {
         if (shouldEncode(index)) {
-
-            println("Element count: " + descriptor.elementsCount)
-
             original.encodeSerializableElement(
                 descriptor,
                 index,
