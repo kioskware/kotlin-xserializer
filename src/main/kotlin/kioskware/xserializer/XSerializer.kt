@@ -3,7 +3,6 @@ package kioskware.xserializer
 import kioskware.xserializer.internals.FilteringEncoder
 import kotlinx.serialization.*
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.Json
 
 /**
  * A serializer that filters properties based on a provided [PropertyFilter].
@@ -34,42 +33,3 @@ class XSerializer<T>(
 inline fun <reified T> filteredSerializer(
     noinline filter: PropertyFilter
 ): XSerializer<T> = XSerializer(serializer(), filter)
-
-
-@SerialInfo
-@Target(AnnotationTarget.PROPERTY)
-@Retention(AnnotationRetention.RUNTIME)
-internal annotation class SkipSerialization
-
-@Serializable
-internal data class Address(
-    val street: String,
-    val city: String,
-    @SkipSerialization
-    val zipCode: String? = null
-)
-
-internal fun main() {
-
-    val address = Address("123 Main St", "Springfield", "12345")
-
-    val serializer = filteredSerializer<Address> {
-        !propertyAnnotations.any { it is SkipSerialization }
-    }
-
-    val serialized = Json.encodeToString(
-        serializer,
-        address
-    )
-
-    println("Serialized Address: $serialized")
-
-    val deserialized = Json.decodeFromString(
-        serializer,
-        serialized
-    )
-
-    println("Deserialized Address: $deserialized")
-
-}
-

@@ -12,7 +12,6 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$version")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$version")
     testImplementation(kotlin("test"))
 }
 
