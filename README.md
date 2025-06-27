@@ -2,7 +2,7 @@ Developed by [kioskware.co](kioskware.co) - company delivering professional Andr
 
 ## License
 
-Copyright [2025] [Kioskware.co]
+Copyright © 2025 Kioskware, Jan Rozenbajgier
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
