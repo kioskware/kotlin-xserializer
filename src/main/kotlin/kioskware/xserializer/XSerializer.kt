@@ -33,3 +33,14 @@ class XSerializer<T>(
 inline fun <reified T> filteredSerializer(
     noinline filter: PropertyFilter
 ): XSerializer<T> = XSerializer(serializer(), filter)
+
+/**
+ * Creates an instance of [XSerializer] for the specified [KSerializer] with the given [filter].
+ *
+ * @param original The original [KSerializer] to wrap.
+ * @param filter The [PropertyFilter] to apply during serialization.
+ * @return An instance of [XSerializer] wrapping the original serializer.
+ */
+fun <T> KSerializer<T>.filtered(
+    filter: PropertyFilter
+): XSerializer<T> = XSerializer(this, filter)
