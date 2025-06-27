@@ -1,6 +1,6 @@
 # Kotlin xSerializer
 
-
+Extension for kotlin serialization, allowing to dynamically exclude some fields from the serialized output.
 
 Developed by [kioskware.co](kioskware.co) - company delivering professional Android kiosk software and hardware. Based in Poland 🇵🇱
 
