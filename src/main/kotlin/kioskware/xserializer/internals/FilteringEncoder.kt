@@ -10,24 +10,26 @@ import kotlinx.serialization.encoding.Encoder
 @ExperimentalSerializationApi
 internal class FilteringEncoder(
     private val original: Encoder,
-    private val filter: PropertyFilter
+    private val filter: PropertyFilter,
+    private val forceOptional: Boolean
 ) : Encoder by original {
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
         val originalComposite = original.beginStructure(descriptor)
-        return FilteringCompositeEncoder(originalComposite, filter, descriptor)
+        return FilteringCompositeEncoder(originalComposite, filter, descriptor, forceOptional)
     }
 
     @ExperimentalSerializationApi
     override fun beginCollection(descriptor: SerialDescriptor, collectionSize: Int): CompositeEncoder {
         val originalCollection = original.beginCollection(descriptor, collectionSize)
-        return FilteringCompositeEncoder(originalCollection, filter, descriptor)
+        return FilteringCompositeEncoder(originalCollection, filter, descriptor, forceOptional)
     }
 
     override fun encodeInline(descriptor: SerialDescriptor): Encoder {
         return FilteringEncoder(
             original.encodeInline(descriptor),
-            filter
+            filter,
+            forceOptional
         )
     }
 

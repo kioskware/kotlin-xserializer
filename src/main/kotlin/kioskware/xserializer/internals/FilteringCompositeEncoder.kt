@@ -16,7 +16,8 @@ import kotlinx.serialization.encoding.Encoder
 internal class FilteringCompositeEncoder(
     private val original: CompositeEncoder,
     private val filter: PropertyFilter,
-    private val descriptor: SerialDescriptor
+    private val descriptor: SerialDescriptor,
+    private val forceOptional: Boolean
 ) : CompositeEncoder by original {
 
     // Helper function to check if a property should be encoded
@@ -27,11 +28,12 @@ internal class FilteringCompositeEncoder(
             isNullable = elementDesc.isNullable,
             isOptional = descriptor.isElementOptional(index),
             propertyAnnotations = descriptor.getElementAnnotations(index),
-            classAnnotations = descriptor.annotations
+            classAnnotations = descriptor.annotations,
+            serialDescriptor = elementDesc
         )
         return filter(info).also {
-            if (!it && (!info.isNullable || !info.isOptional)) {
-                throw SerializationException("Filtered out property '${info.serialName}' must be nullable and optional.")
+            if (!it && !info.isOptional && forceOptional) {
+                throw SerializationException("Filtered out property '${info.serialName}' must be optional.")
             }
         }
     }
@@ -131,7 +133,8 @@ internal class FilteringCompositeEncoder(
     override fun encodeInlineElement(descriptor: SerialDescriptor, index: Int): Encoder {
         return FilteringEncoder(
             original.encodeInlineElement(descriptor, index),
-            filter
+            filter,
+            forceOptional
         )
     }
 
